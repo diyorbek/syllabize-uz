@@ -1,0 +1,7 @@
+{
+  "name": "syllabify-uz",
+  "version": "0.0.1",
+  "description": "Library for dividing Uzbek words into syllables.",
+  "author": "Diyorbek Sadullaev",
+  "license": "MIT"
+}
