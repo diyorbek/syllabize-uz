@@ -1,5 +1,5 @@
 {
-  "name": "syllabify-uz",
+  "name": "syllabize-uz",
   "version": "0.0.1",
   "description": "Library for dividing Uzbek words into syllables.",
   "author": "Diyorbek Sadullaev <diyorbek3377@gmail.com>",

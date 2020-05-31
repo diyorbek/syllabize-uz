@@ -18,8 +18,8 @@ function splitDigrams(text: string) {
     .replace(/ç/g, "ch");
 }
 
-function findVovels(word: string): number[] {
-  const vovelPositions: number[] = [];
+function findVovelIndices(word: string): number[] {
+  const vovelIndices: number[] = [];
   const vovels = /[aoueiö]/;
   const wordLength = word.length;
 
@@ -27,11 +27,11 @@ function findVovels(word: string): number[] {
     const char = word[index];
 
     if (vovels.test(char)) {
-      vovelPositions.push(index);
+      vovelIndices.push(index);
     }
   }
 
-  return vovelPositions;
+  return vovelIndices;
 }
 
 function fragmentize(fragment: string, vovelsIndices: number[]): string[] {
@@ -59,13 +59,13 @@ function fragmentize(fragment: string, vovelsIndices: number[]): string[] {
   return syllables;
 }
 
-export function syllabify(word: string): string[] {
+export function syllabize(word: string): string[] {
   const unifiedWord = unifyDigrams(word);
   const parts = unifiedWord.split(APOSTROPHE);
 
-  const syllabified = parts
+  const syllabized = parts
     .map((part, i) => {
-      const vovelsIndices = findVovels(part);
+      const vovelsIndices = findVovelIndices(part);
       const syllables = fragmentize(part, vovelsIndices);
 
       if (parts.length > 1 && i !== parts.length - 1) {
@@ -76,5 +76,5 @@ export function syllabify(word: string): string[] {
     })
     .flat();
 
-  return syllabified.map((syllable) => splitDigrams(syllable));
+  return syllabized.map((syllable) => splitDigrams(syllable));
 }
