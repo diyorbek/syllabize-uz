@@ -1,0 +1,9 @@
+dist/*
+node_modules/
+
+# data definition files
+**/*.d.ts
+
+*.js
+
+tsconfig.json

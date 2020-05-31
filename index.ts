@@ -1,21 +1,21 @@
-const APOSTROPHE = "’";
+const APOSTROPHE = '’';
 
 function unifyDigrams(word: string) {
   return word
     .toLowerCase()
-    .replace(/sh/g, "ş")
-    .replace(/ch/g, "ç")
-    .replace(/g[ʻʼ’'`‘]/g, "ğ")
-    .replace(/o[ʻʼ’'`‘]/g, "ö")
+    .replace(/sh/g, 'ş')
+    .replace(/ch/g, 'ç')
+    .replace(/g[ʻʼ’'`‘]/g, 'ğ')
+    .replace(/o[ʻʼ’'`‘]/g, 'ö')
     .replace(/[ʻʼ'`‘]/g, APOSTROPHE);
 }
 
 function splitDigrams(text: string) {
   return text
-    .replace(/ğ/g, "g‘")
-    .replace(/ö/g, "o‘")
-    .replace(/ş/g, "sh")
-    .replace(/ç/g, "ch");
+    .replace(/ğ/g, 'g‘')
+    .replace(/ö/g, 'o‘')
+    .replace(/ş/g, 'sh')
+    .replace(/ç/g, 'ch');
 }
 
 function findVovelIndices(word: string): number[] {
@@ -54,6 +54,7 @@ function fragmentize(fragment: string, vovelsIndices: number[]): string[] {
     .map((vovelIndex) => vovelIndex - syllable.length);
 
   const next = fragmentize(fragment.slice(syllableLength), nextVovelsIndices);
+
   syllables.push(...next);
 
   return syllables;
