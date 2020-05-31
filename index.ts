@@ -1,3 +1,23 @@
+const APOSTROPHE = "’";
+
+function unifyDigrams(word: string) {
+  return word
+    .toLowerCase()
+    .replace(/sh/g, "ş")
+    .replace(/ch/g, "ç")
+    .replace(/g[ʻʼ’'`‘]/g, "ğ")
+    .replace(/o[ʻʼ’'`‘]/g, "ö")
+    .replace(/[ʻʼ'`‘]/g, APOSTROPHE);
+}
+
+function splitDigrams(text: string) {
+  return text
+    .replace(/ğ/g, "g‘")
+    .replace(/ö/g, "o‘")
+    .replace(/ş/g, "sh")
+    .replace(/ç/g, "ch");
+}
+
 function findVovels(word: string): number[] {
   const vovelPositions: number[] = [];
   const vovels = /[aoueiö]/;
@@ -40,8 +60,21 @@ function fragmentize(fragment: string, vovelsIndices: number[]): string[] {
 }
 
 export function syllabify(word: string): string[] {
-  const vovels = findVovels(word);
-  const syllables = fragmentize(word, vovels);
+  const unifiedWord = unifyDigrams(word);
+  const parts = unifiedWord.split(APOSTROPHE);
 
-  return syllables;
+  const syllabified = parts
+    .map((part, i) => {
+      const vovelsIndices = findVovels(part);
+      const syllables = fragmentize(part, vovelsIndices);
+
+      if (parts.length > 1 && i !== parts.length - 1) {
+        syllables[syllables.length - 1] += APOSTROPHE;
+      }
+
+      return syllables;
+    })
+    .flat();
+
+  return syllabified.map((syllable) => splitDigrams(syllable));
 }
