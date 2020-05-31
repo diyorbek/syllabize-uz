@@ -2,6 +2,15 @@
   "name": "syllabify-uz",
   "version": "0.0.1",
   "description": "Library for dividing Uzbek words into syllables.",
-  "author": "Diyorbek Sadullaev",
-  "license": "MIT"
+  "author": "Diyorbek Sadullaev <diyorbek3377@gmail.com>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^3.9.3"
+  },
+  "prepublish": "tsc"
 }
