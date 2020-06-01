@@ -10,6 +10,7 @@ test.each`
   ${'abab'}        | ${'a-bab'}                                 | ${2}
   ${'abbaba'}      | ${'ab-ba-ba'}                              | ${3}
   ${'abbb'}        | ${'abbb'}                                  | ${1}
+  ${'bbbb'}        | ${'bbbb'}                                  | ${1}
   ${'abbaa'}       | ${'ab-ba-a'}                               | ${3}
   ${"aa'ba"}       | ${`a-a${APOSTROPHE}-ba`}                   | ${3}
   ${'aa`ba'}       | ${`a-a${APOSTROPHE}-ba`}                   | ${3}

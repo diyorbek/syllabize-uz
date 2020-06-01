@@ -12,7 +12,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,23 +19,23 @@ jobs:
         node-version: [10.x, 12.x, 14.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    
-    - name: Install Dependencies
-      run: yarn install --frozen-lockfile
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Lint
-      run: yarn lint
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
 
-    - name: Test
-      run: yarn test
+      - name: Lint
+        run: yarn lint
 
-    - name: Upload coverage
-      uses: codecov/codecov-action@v1
+      - name: Test
+        run: yarn test
 
-    - name: Build
-      run: yarn build
+      - name: Upload coverage
+        uses: codecov/codecov-action@v1
+
+      - name: Build
+        run: yarn build
