@@ -64,18 +64,19 @@ function fragmentize(fragment: string, vovelsIndices: number[]): string[] {
 export function syllabize(word: string): string[] {
   const unifiedWord = unifyDigrams(word);
   const parts = unifiedWord.split(APOSTROPHE);
-  const syllabized = parts
-    .map((part, i) => {
-      const vovelsIndices = findVovelIndices(part);
-      const syllables = fragmentize(part, vovelsIndices);
 
-      if (parts.length > 1 && i !== parts.length - 1) {
-        syllables[syllables.length - 1] += APOSTROPHE;
-      }
+  const syllabized = parts.map((part, i) => {
+    const vovelsIndices = findVovelIndices(part);
+    const syllables = fragmentize(part, vovelsIndices);
 
-      return syllables;
-    })
-    .flat();
+    if (parts.length > 1 && i !== parts.length - 1) {
+      syllables[syllables.length - 1] += APOSTROPHE;
+    }
 
-  return syllabized.map((syllable) => splitDigrams(syllable));
+    return syllables;
+  });
+
+  return new Array<string>()
+    .concat(...syllabized)
+    .map((syllable) => splitDigrams(syllable));
 }
