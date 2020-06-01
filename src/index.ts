@@ -1,4 +1,5 @@
-const APOSTROPHE = '’';
+const APOSTROPHE = String.fromCharCode(700);
+const TURNED_COMMA = String.fromCharCode(699);
 
 function unifyDigrams(word: string) {
   return word
@@ -7,13 +8,13 @@ function unifyDigrams(word: string) {
     .replace(/ch/g, 'ç')
     .replace(/g[ʻʼ’'`‘]/g, 'ğ')
     .replace(/o[ʻʼ’'`‘]/g, 'ö')
-    .replace(/[ʻʼ'`‘]/g, APOSTROPHE);
+    .replace(/[ʻ'`‘’]/g, APOSTROPHE);
 }
 
 function splitDigrams(text: string) {
   return text
-    .replace(/ğ/g, 'g‘')
-    .replace(/ö/g, 'o‘')
+    .replace(/ğ/g, `g${TURNED_COMMA}`)
+    .replace(/ö/g, `o${TURNED_COMMA}`)
     .replace(/ş/g, 'sh')
     .replace(/ç/g, 'ch');
 }
@@ -63,7 +64,6 @@ function fragmentize(fragment: string, vovelsIndices: number[]): string[] {
 export function syllabize(word: string): string[] {
   const unifiedWord = unifyDigrams(word);
   const parts = unifiedWord.split(APOSTROPHE);
-
   const syllabized = parts
     .map((part, i) => {
       const vovelsIndices = findVovelIndices(part);

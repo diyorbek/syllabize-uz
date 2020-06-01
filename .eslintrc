@@ -17,6 +17,7 @@
       "single",
       { "avoidEscape": true, "allowTemplateLiterals": true }
     ],
+    "prefer-template": "warn",
     "eqeqeq": "warn",
     "@typescript-eslint/no-inferrable-types": [
       "warn",
