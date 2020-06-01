@@ -13,7 +13,8 @@
     "test": "jest --coverage",
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts",
-    "prepublishOnly": "yarn typecheck && yarn lint && yarn format && yarn build"
+    "prepublishOnly": "yarn typecheck && yarn lint && yarn format && yarn build",
+    "postversion": "git push && git push --tags"
   },
   "devDependencies": {
     "@types/jest": "^25.2.3",
