@@ -24,3 +24,20 @@ export function splitDigrams(text: string): string {
     .replace(new RegExp(S_CEDILLA_SMALL, 'g'), 'sh')
     .replace(new RegExp(C_CEDILLA_SMALL, 'g'), 'ch');
 }
+
+const wordValidateRegExp = new RegExp(
+  `[^a-zA-Z\\-${
+    APOSTROPHE +
+    TURNED_COMMA +
+    S_CEDILLA_SMALL +
+    C_CEDILLA_SMALL +
+    G_BREVE_SMALL +
+    O_TILDE_SMALL
+  }]`,
+);
+
+export function validateWord(word: string): void | never {
+  if (wordValidateRegExp.test(word)) {
+    throw new Error('Given string contains non-word-character.');
+  }
+}

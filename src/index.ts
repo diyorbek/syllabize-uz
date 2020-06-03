@@ -1,15 +1,14 @@
-import { unifyDigrams, splitDigrams } from './transformWord';
+import { unifyDigrams, splitDigrams, validateWord } from './utils';
 import { APOSTROPHE, VOVELS } from './characterCollection';
 
 function findVovelIndices(word: string): number[] {
   const vovelIndices: number[] = [];
-  const vovels = new RegExp(`[${VOVELS}]`);
   const wordLength = word.length;
 
   for (let index = 0; index < wordLength; index++) {
     const char = word[index];
 
-    if (vovels.test(char)) {
+    if (VOVELS.includes(char)) {
       vovelIndices.push(index);
     }
   }
@@ -45,6 +44,9 @@ function fragmentize(fragment: string, vovelsIndices: number[]): string[] {
 
 export function syllabize(word: string): string[] {
   const unifiedWord = unifyDigrams(word);
+
+  validateWord(unifiedWord);
+
   const parts = unifiedWord.split(APOSTROPHE);
 
   const syllabized = parts.map((part, i) => {

@@ -28,3 +28,10 @@ test.each`
   expect(result.join('-')).toBe(output);
   expect(result.length).toBe(length);
 });
+
+test.each(['a4', '"ab', ']a', 'a^3', '><', '#'])(
+  'should throw error on invalid word',
+  (word) => {
+    expect(() => syllabize(word)).toThrowError();
+  },
+);
