@@ -1,9 +1,8 @@
 name: Publish
 
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [published]
 
 jobs:
   npm-publish:
@@ -11,17 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@master
-      - name: Set up Node.js
-        uses: actions/setup-node@master
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
         with:
           node-version: 10.0.0
-      - name: Publish if version has been updated
-        uses: pascalgn/npm-publish-action@4f4bf159e299f65d21cd1cbd96fc5d53228036df
-        with:
-          tag_name: 'v%s'
-          commit_pattern: 'v%s'
+          registry-url: https://registry.npmjs.org/
+      - run: yarn install
+      - run: npm publish --access public
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
