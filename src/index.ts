@@ -1,27 +1,9 @@
-const APOSTROPHE = String.fromCharCode(700);
-const TURNED_COMMA = String.fromCharCode(699);
-
-function unifyDigrams(word: string) {
-  return word
-    .toLowerCase()
-    .replace(/sh/g, 'ş')
-    .replace(/ch/g, 'ç')
-    .replace(/g[ʻʼ’'`‘]/g, 'ğ')
-    .replace(/o[ʻʼ’'`‘]/g, 'ö')
-    .replace(/[ʻ'`‘’]/g, APOSTROPHE);
-}
-
-function splitDigrams(text: string) {
-  return text
-    .replace(/ğ/g, `g${TURNED_COMMA}`)
-    .replace(/ö/g, `o${TURNED_COMMA}`)
-    .replace(/ş/g, 'sh')
-    .replace(/ç/g, 'ch');
-}
+import { unifyDigrams, splitDigrams } from './transformWord';
+import { APOSTROPHE, VOVELS } from './characterCollection';
 
 function findVovelIndices(word: string): number[] {
   const vovelIndices: number[] = [];
-  const vovels = /[aoueiö]/;
+  const vovels = new RegExp(`[${VOVELS}]`);
   const wordLength = word.length;
 
   for (let index = 0; index < wordLength; index++) {
