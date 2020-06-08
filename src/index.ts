@@ -43,6 +43,10 @@ function fragmentize(fragment: string, vovelsIndices: number[]): string[] {
 }
 
 export function syllabize(word: string): string[] {
+  if (word.length === 0) {
+    return [];
+  }
+
   const unifiedWord = unifyDigrams(word);
 
   validateWord(unifiedWord);

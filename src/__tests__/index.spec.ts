@@ -5,6 +5,7 @@ const TURNED_COMMA = String.fromCharCode(699);
 
 test.each`
   input            | output                                     | length
+  ${''}            | ${''}                                      | ${0}
   ${'a'}           | ${'a'}                                     | ${1}
   ${'aoueioʻ'}     | ${'a-o-u-e-i-oʻ'}                          | ${6}
   ${'abab'}        | ${'a-bab'}                                 | ${2}
