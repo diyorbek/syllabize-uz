@@ -1,6 +1,6 @@
 {
   "name": "syllabize-uz",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Library for dividing Uzbek words into syllables. Oʻzbekcha soʻzlarni boʻgʻinlarga ajratish.",
   "author": "Diyorbek Sadullaev <diyorbek3377@gmail.com>",
   "repository": "git@github.com:Diyorbek/syllabize-uz.git",
@@ -18,6 +18,9 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc",
