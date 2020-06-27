@@ -7,5 +7,6 @@ export const C_CEDILLA_SMALL = 'ç';
 export const S_CEDILLA_SMALL = 'ş';
 export const G_BREVE_SMALL = 'ğ';
 export const O_TILDE_SMALL = 'õ';
+export const N_TILDE_SMALL = 'ñ';
 
 export const VOVELS = 'aoueiõ';
