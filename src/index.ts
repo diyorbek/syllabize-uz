@@ -1,5 +1,6 @@
 import { unifyDigrams, splitDigrams, validateWord } from './utils';
 import { APOSTROPHE, VOVELS } from './characterCollection';
+import { EXCEPTIONAL_WORDS } from './exeptions';
 
 function findVovelIndices(word: string): number[] {
   const vovelIndices: number[] = [];
@@ -48,6 +49,37 @@ function fragmentizeSubstr(str: string, start: number, end?: number) {
   return fragmentize(part, findVovelIndices(part));
 }
 
+function splitIntoSyllables(word: string): string[] {
+  if (word.length === 0) {
+    return [];
+  }
+
+  validateWord(word);
+
+  const syllabized: string[][] = [];
+
+  let start = 0;
+  let syllables: string[];
+
+  for (let i = 0; i < word.length; i++) {
+    if (word[i] === APOSTROPHE || word[i] === '-') {
+      syllables = fragmentizeSubstr(word, start, i);
+
+      if (word[i] === APOSTROPHE) {
+        syllables[syllables.length - 1] += word[i];
+      }
+
+      syllabized.push(syllables);
+      start = i + 1;
+    }
+  }
+
+  syllables = fragmentizeSubstr(word, start);
+  syllabized.push(syllables);
+
+  return new Array<string>().concat(...syllabized);
+}
+
 export function syllabize(word: string): string[] {
   if (word.length === 0) {
     return [];
@@ -57,28 +89,24 @@ export function syllabize(word: string): string[] {
 
   validateWord(unifiedWord);
 
-  const syllabized: string[][] = [];
+  const parts: string[] = [];
 
-  let start = 0;
-  let syllables: string[];
+  for (const exceptional in EXCEPTIONAL_WORDS) {
+    if (word.length && word.includes(exceptional)) {
+      const [left, rest] = word.split(exceptional);
 
-  for (let i = 0; i < unifiedWord.length; i++) {
-    if (unifiedWord[i] === APOSTROPHE || unifiedWord[i] === '-') {
-      syllables = fragmentizeSubstr(unifiedWord, start, i);
+      parts.push(
+        ...splitIntoSyllables(left),
+        ...EXCEPTIONAL_WORDS[exceptional],
+      );
 
-      if (unifiedWord[i] === APOSTROPHE) {
-        syllables[syllables.length - 1] += unifiedWord[i];
-      }
-
-      syllabized.push(syllables);
-      start = i + 1;
+      word = rest;
     }
   }
 
-  syllables = fragmentizeSubstr(unifiedWord, start);
-  syllabized.push(syllables);
+  parts.push(...splitIntoSyllables(word));
 
   return new Array<string>()
-    .concat(...syllabized)
+    .concat(...parts)
     .map((syllable) => splitDigrams(syllable));
 }
