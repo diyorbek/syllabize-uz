@@ -42,6 +42,12 @@ function fragmentize(fragment: string, vovelsIndices: number[]): string[] {
   return syllables;
 }
 
+function fragmentizeSubstr(str: string, start: number, end?: number) {
+  const part = str.substring(start, end);
+
+  return fragmentize(part, findVovelIndices(part));
+}
+
 export function syllabize(word: string): string[] {
   if (word.length === 0) {
     return [];
@@ -51,18 +57,26 @@ export function syllabize(word: string): string[] {
 
   validateWord(unifiedWord);
 
-  const parts = unifiedWord.split(APOSTROPHE);
+  const syllabized: string[][] = [];
 
-  const syllabized = parts.map((part, i) => {
-    const vovelsIndices = findVovelIndices(part);
-    const syllables = fragmentize(part, vovelsIndices);
+  let start = 0;
+  let syllables: string[];
 
-    if (parts.length > 1 && i !== parts.length - 1) {
-      syllables[syllables.length - 1] += APOSTROPHE;
+  for (let i = 0; i < unifiedWord.length; i++) {
+    if (unifiedWord[i] === APOSTROPHE || unifiedWord[i] === '-') {
+      syllables = fragmentizeSubstr(unifiedWord, start, i);
+
+      if (unifiedWord[i] === APOSTROPHE) {
+        syllables[syllables.length - 1] += unifiedWord[i];
+      }
+
+      syllabized.push(syllables);
+      start = i + 1;
     }
+  }
 
-    return syllables;
-  });
+  syllables = fragmentizeSubstr(unifiedWord, start);
+  syllabized.push(syllables);
 
   return new Array<string>()
     .concat(...syllabized)
