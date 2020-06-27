@@ -78,6 +78,7 @@ describe('exeptional words', () => {
     ${'fonogrammadan'}  | ${`fo-no-gram-ma-dan`}
     ${'monogrammatika'} | ${`mo-no-gram-ma-ti-ka`}
     ${'melodrama'}      | ${`me-lo-dra-ma`}
+    ${'melodrama'}      | ${`me-lo-dra-ma`}
   `('[$input] should be split into [$output]', ({ input, output }) => {
     expect(syllabize(input).join('-')).toBe(output);
   });

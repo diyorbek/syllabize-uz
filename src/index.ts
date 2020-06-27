@@ -54,8 +54,6 @@ function splitIntoSyllables(word: string): string[] {
     return [];
   }
 
-  validateWord(word);
-
   const syllabized: string[][] = [];
 
   let start = 0;
@@ -85,26 +83,26 @@ export function syllabize(word: string): string[] {
     return [];
   }
 
-  const unifiedWord = unifyDigrams(word);
+  let unifiedWord = unifyDigrams(word);
 
   validateWord(unifiedWord);
 
   const parts: string[] = [];
 
   for (const exceptional in EXCEPTIONAL_WORDS) {
-    if (word.length && word.includes(exceptional)) {
-      const [left, rest] = word.split(exceptional);
+    if (unifiedWord.length && unifiedWord.includes(exceptional)) {
+      const [left, rest] = unifiedWord.split(exceptional);
 
       parts.push(
         ...splitIntoSyllables(left),
         ...EXCEPTIONAL_WORDS[exceptional],
       );
 
-      word = rest;
+      unifiedWord = rest;
     }
   }
 
-  parts.push(...splitIntoSyllables(word));
+  parts.push(...splitIntoSyllables(unifiedWord));
 
   return new Array<string>()
     .concat(...parts)
