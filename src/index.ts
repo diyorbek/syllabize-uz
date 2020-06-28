@@ -1,6 +1,6 @@
 import { unifyDigrams, splitDigrams, validateWord } from './utils';
 import { APOSTROPHE, VOVELS } from './characterCollection';
-import { EXCEPTIONAL_WORDS } from './exeptions';
+import { EXCEPTIONAL_WORDS } from './exceptions/exceptionalWords';
 
 function findVovelIndices(word: string): number[] {
   const vovelIndices: number[] = [];
@@ -48,10 +48,6 @@ function splitIntoSyllables(fragment: string): string[] {
     return [];
   }
 
-  if (EXCEPTIONAL_WORDS[fragment]) {
-    return EXCEPTIONAL_WORDS[fragment];
-  }
-
   const syllables: string[] = [];
 
   let start = 0;
@@ -94,10 +90,6 @@ export function syllabize(word: string): string[] {
     return [];
   }
 
-  if (EXCEPTIONAL_WORDS[word]) {
-    return EXCEPTIONAL_WORDS[word];
-  }
-
   // Make letter combinations a single special character
   const unifiedWord = unifyDigrams(word);
 
@@ -135,8 +127,8 @@ export function syllabize(word: string): string[] {
     (a, b) => a[0] - b[0],
   );
 
-  const fragments: string[] = [];
-  let start = 0;
+  const fragments: Array<string | string[]> = [];
+  let fragmentStartIndex = 0;
 
   for (let i = 0; i <= sortedExceptionalsIndices.length; i++) {
     let exeptional: string | undefined;
@@ -146,19 +138,52 @@ export function syllabize(word: string): string[] {
       [indexOfExeptional, exeptional] = sortedExceptionalsIndices[i];
     }
 
-    const fragment = unifiedWord.substring(start, indexOfExeptional);
+    const fragment = unifiedWord.substring(
+      fragmentStartIndex,
+      indexOfExeptional,
+    );
 
     if (fragment.length) {
       fragments.push(fragment);
     }
 
     if (exeptional && indexOfExeptional !== undefined) {
-      fragments.push(exeptional);
-      start = indexOfExeptional + exeptional.length;
+      fragments.push(
+        EXCEPTIONAL_WORDS[exeptional].alternative ||
+          EXCEPTIONAL_WORDS[exeptional].always || [exeptional],
+      );
+      fragmentStartIndex = indexOfExeptional + exeptional.length;
     }
   }
 
-  const syllables = fragments.map(splitIntoSyllables);
+  // Integrate non array fragments int one part
+  const joinedFragments: Array<string | string[]> = [];
+  let joinedFragment = '';
+  let fragmentJoinStartIndex = 0;
+
+  for (let i = 0; i <= fragments.length; i++) {
+    if (typeof fragments[i] !== 'string') {
+      joinedFragment = fragments.slice(fragmentJoinStartIndex, i).join('');
+      if (joinedFragment) {
+        joinedFragments.push(joinedFragment);
+      }
+
+      if (fragments[i]) {
+        joinedFragments.push(fragments[i]);
+      }
+
+      fragmentJoinStartIndex = i + 1;
+    }
+  }
+
+  const syllables = joinedFragments.map((fragment) => {
+    if (typeof fragment === 'string') {
+      return splitIntoSyllables(fragment);
+    }
+
+    return fragment;
+  });
+
   const flattenedSyllables = new Array<string>().concat(...syllables);
 
   // Return replacing the special character with their corresponding letter combination

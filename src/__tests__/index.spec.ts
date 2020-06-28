@@ -74,6 +74,8 @@ describe('exeptional words', () => {
     ${'kongressokongressmilligrammininggrammasi'} | ${`kon-gress-o-kon-gress-mil-li-gramm-i-ning-gram-ma-si`}
     ${'-kongress-'}                               | ${`kon-gress`}
     ${'inglizlarga'}                              | ${`in-gliz-lar-ga`}
+    ${'kilogrammfonogrammang'}                    | ${`ki-lo-gramm-fo-no-gram-mang`}
+    ${'dramanglama'}                              | ${`dra-mang-la-ma`}
   `('[$input] should be split into [$output]', ({ input, output }) => {
     expect(syllabize(input).join('-')).toBe(output);
   });

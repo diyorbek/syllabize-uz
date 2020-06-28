@@ -12,8 +12,7 @@ export const N_TILDE_SMALL = 'ñ';
 export const VOVELS = 'aoueiõ';
 
 // Replacement characters for exceptional letter sequences
-
-export const R_CEDILLA_SMALL = 'ŗ'; // replacement for 'dr'
-export const R_ACUTE_SMALL = 'ŕ'; // replacement for 'gr'
-export const L_ACUTE_SMALL = 'ĺ'; // replacement for 'gl'
-export const M_HOOK_SMALL = 'ɱ'; // replacement for 'mm'
+export const R_CEDILLA_SMALL = 'ŗ';
+export const R_ACUTE_SMALL = 'ŕ';
+export const L_ACUTE_SMALL = 'ĺ';
+export const M_HOOK_SMALL = 'ɱ';

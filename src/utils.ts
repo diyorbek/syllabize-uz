@@ -7,29 +7,8 @@ import {
   TURNED_COMMA,
   N_TILDE_SMALL,
 } from './characterCollection';
-import { NGwords } from './exeptions';
-
-const SUFFIXES = ['ning', 'ni', 'ga', 'da', 'dan'];
-const SUFFIXES_JOIN = SUFFIXES.join('|');
-
-const NG_WORDS_JOIN = NGwords.join('|');
-
-const NG_REGX = new RegExp(
-  `${NG_WORDS_JOIN}|[ia]ng(iz)?(${SUFFIXES_JOIN})?(lar?)?i?(${SUFFIXES_JOIN})?$`,
-  'g',
-);
-
-export function unifyNG(word: string): string {
-  const match = word.match(NG_REGX);
-
-  if (match) {
-    match.forEach((m) => {
-      word = word.replace(m, m.replace(/ng/g, N_TILDE_SMALL));
-    });
-  }
-
-  return word;
-}
+import { unifyNG } from './exceptions/ngWords';
+import { splitReplacements } from './exceptions/exceptionalCombinations';
 
 export function unifyDigrams(word: string): string {
   return unifyNG(
@@ -44,12 +23,14 @@ export function unifyDigrams(word: string): string {
 }
 
 export function splitDigrams(text: string): string {
-  return text
-    .replace(new RegExp(G_BREVE_SMALL, 'g'), `g${TURNED_COMMA}`)
-    .replace(new RegExp(O_TILDE_SMALL, 'g'), `o${TURNED_COMMA}`)
-    .replace(new RegExp(S_CEDILLA_SMALL, 'g'), 'sh')
-    .replace(new RegExp(C_CEDILLA_SMALL, 'g'), 'ch')
-    .replace(new RegExp(N_TILDE_SMALL, 'g'), 'ng');
+  return splitReplacements(
+    text
+      .replace(new RegExp(G_BREVE_SMALL, 'g'), `g${TURNED_COMMA}`)
+      .replace(new RegExp(O_TILDE_SMALL, 'g'), `o${TURNED_COMMA}`)
+      .replace(new RegExp(S_CEDILLA_SMALL, 'g'), 'sh')
+      .replace(new RegExp(C_CEDILLA_SMALL, 'g'), 'ch')
+      .replace(new RegExp(N_TILDE_SMALL, 'g'), 'ng'),
+  );
 }
 
 const wordValidateRegExp = new RegExp(
@@ -69,3 +50,7 @@ export function validateWord(word: string): void | never {
     throw new Error('Given string contains non-word-character.');
   }
 }
+
+export type PickProp<T, K extends keyof T> = {
+  [key in keyof Omit<T, K>]?: never;
+};
