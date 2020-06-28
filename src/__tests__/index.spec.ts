@@ -70,15 +70,10 @@ describe('`NG`-word splitting', () => {
 
 describe('exeptional words', () => {
   test.each`
-    input               | output
-    ${'kongress'}       | ${`kon-gress`}
-    ${'kongressmen'}    | ${`kon-gress-men`}
-    ${'inglizdan'}      | ${`in-gliz-dan`}
-    ${'kilogrammidan'}  | ${`ki-lo-gramm-i-dan`}
-    ${'fonogrammadan'}  | ${`fo-no-gram-ma-dan`}
-    ${'monogrammatika'} | ${`mo-no-gram-ma-ti-ka`}
-    ${'melodrama'}      | ${`me-lo-dra-ma`}
-    ${'melodrama'}      | ${`me-lo-dra-ma`}
+    input                                         | output
+    ${'kongressokongressmilligrammininggrammasi'} | ${`kon-gress-o-kon-gress-mil-li-gramm-i-ning-gram-ma-si`}
+    ${'-kongress-'}                               | ${`kon-gress`}
+    ${'inglizlarga'}                              | ${`in-gliz-lar-ga`}
   `('[$input] should be split into [$output]', ({ input, output }) => {
     expect(syllabize(input).join('-')).toBe(output);
   });

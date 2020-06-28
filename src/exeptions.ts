@@ -1,14 +1,15 @@
-import { O_TILDE_SMALL } from './characterCollection';
+import { O_TILDE_SMALL as o_ } from './characterCollection';
 
 // [EN] Words where 'NG' comes as a single consonant. This list is not complete. Feel free to send PR for improvements.
 // [UZ] 'NG' tovush sifatida kelgan so'zlar. Ro'yhat to'liq emas. Agar tuzatish kiritishni xohlasangiz bemalol PR jonatishingiz mumkin.
 export const NGwords = [
-  `k${O_TILDE_SMALL}ngil`,
+  `k${o_}ngil`,
   'singil',
   'dengiz',
   'bodring',
   'rang',
   'teng',
+  'garang',
   'gurung',
 ];
 

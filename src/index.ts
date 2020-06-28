@@ -17,9 +17,9 @@ function findVovelIndices(word: string): number[] {
   return vovelIndices;
 }
 
-function fragmentize(fragment: string, vovelsIndices: number[]): string[] {
+function splitByVovels(str: string, vovelsIndices: number[]): string[] {
   if (vovelsIndices.length <= 1) {
-    return [fragment];
+    return [str];
   }
 
   const syllables: string[] = [];
@@ -28,7 +28,7 @@ function fragmentize(fragment: string, vovelsIndices: number[]): string[] {
   const syllableLength =
     vovelsIndices[0] + (distance < 3 ? 1 : distance < 4 ? 2 : 3);
 
-  const syllable = fragment.substr(0, syllableLength);
+  const syllable = str.substring(0, syllableLength);
 
   syllables.push(syllable);
 
@@ -36,46 +36,57 @@ function fragmentize(fragment: string, vovelsIndices: number[]): string[] {
     .slice(1)
     .map((vovelIndex) => vovelIndex - syllable.length);
 
-  const next = fragmentize(fragment.slice(syllableLength), nextVovelsIndices);
+  const next = splitByVovels(str.slice(syllableLength), nextVovelsIndices);
 
   syllables.push(...next);
 
   return syllables;
 }
 
-function fragmentizeSubstr(str: string, start: number, end?: number) {
-  const part = str.substring(start, end);
-
-  return fragmentize(part, findVovelIndices(part));
-}
-
-function splitIntoSyllables(word: string): string[] {
-  if (word.length === 0) {
+function splitIntoSyllables(fragment: string): string[] {
+  if (fragment.length === 0) {
     return [];
   }
 
-  const syllabized: string[][] = [];
+  if (EXCEPTIONAL_WORDS[fragment]) {
+    return EXCEPTIONAL_WORDS[fragment];
+  }
+
+  const syllables: string[] = [];
 
   let start = 0;
-  let syllables: string[];
+  // Using same memory slot inside for loop
+  let substring: string;
+  let syllablesOfSubstring: string[];
 
-  for (let i = 0; i < word.length; i++) {
-    if (word[i] === APOSTROPHE || word[i] === '-') {
-      syllables = fragmentizeSubstr(word, start, i);
+  for (let i = 0; i <= fragment.length; i++) {
+    if (
+      fragment[i] === APOSTROPHE ||
+      fragment[i] === '-' ||
+      i === fragment.length
+    ) {
+      substring = fragment.substring(start, i);
+      syllablesOfSubstring = splitByVovels(
+        substring,
+        findVovelIndices(substring),
+      );
 
-      if (word[i] === APOSTROPHE) {
-        syllables[syllables.length - 1] += word[i];
+      if (
+        syllablesOfSubstring[syllablesOfSubstring.length - 1].length &&
+        fragment[i] === APOSTROPHE
+      ) {
+        syllablesOfSubstring[syllablesOfSubstring.length - 1] += fragment[i];
       }
 
-      syllabized.push(syllables);
+      if (syllablesOfSubstring[syllablesOfSubstring.length - 1].length) {
+        syllables.push(...syllablesOfSubstring);
+      }
+
       start = i + 1;
     }
   }
 
-  syllables = fragmentizeSubstr(word, start);
-  syllabized.push(syllables);
-
-  return new Array<string>().concat(...syllabized);
+  return syllables;
 }
 
 export function syllabize(word: string): string[] {
@@ -83,28 +94,73 @@ export function syllabize(word: string): string[] {
     return [];
   }
 
-  let unifiedWord = unifyDigrams(word);
+  if (EXCEPTIONAL_WORDS[word]) {
+    return EXCEPTIONAL_WORDS[word];
+  }
 
+  // Make letter combinations a single special character
+  const unifiedWord = unifyDigrams(word);
+
+  // Checks if given word consists of word characters.
+  // Tests against internally used special characters.
   validateWord(unifiedWord);
 
-  const parts: string[] = [];
+  // Map exeptionals with their indices in given word
+  const exceptionalsIndices = new Map<number, string>();
+
+  // Using same memory slot inside for-loop
+  let regex: RegExp;
+  let regexMatchArray: RegExpExecArray | null;
+  let fragmentInCurrentIndex: string | undefined;
 
   for (const exceptional in EXCEPTIONAL_WORDS) {
-    if (unifiedWord.length && unifiedWord.includes(exceptional)) {
-      const [left, rest] = unifiedWord.split(exceptional);
+    regex = new RegExp(exceptional, 'g');
 
-      parts.push(
-        ...splitIntoSyllables(left),
-        ...EXCEPTIONAL_WORDS[exceptional],
-      );
+    if (unifiedWord.match(regex)) {
+      while ((regexMatchArray = regex.exec(unifiedWord)) !== null) {
+        fragmentInCurrentIndex = exceptionalsIndices.get(regexMatchArray.index);
 
-      unifiedWord = rest;
+        if (!fragmentInCurrentIndex) {
+          exceptionalsIndices.set(regexMatchArray.index, exceptional);
+        } else if (fragmentInCurrentIndex.length < exceptional.length) {
+          // Prioritize longer word
+          exceptionalsIndices.set(regexMatchArray.index, exceptional);
+        }
+      }
     }
   }
 
-  parts.push(...splitIntoSyllables(unifiedWord));
+  // Sort indices in order not to lose the original sequence
+  const sortedExceptionalsIndices = Array.from(exceptionalsIndices).sort(
+    (a, b) => a[0] - b[0],
+  );
 
-  return new Array<string>()
-    .concat(...parts)
-    .map((syllable) => splitDigrams(syllable));
+  const fragments: string[] = [];
+  let start = 0;
+
+  for (let i = 0; i <= sortedExceptionalsIndices.length; i++) {
+    let exeptional: string | undefined;
+    let indexOfExeptional: number | undefined;
+
+    if (sortedExceptionalsIndices[i]) {
+      [indexOfExeptional, exeptional] = sortedExceptionalsIndices[i];
+    }
+
+    const fragment = unifiedWord.substring(start, indexOfExeptional);
+
+    if (fragment.length) {
+      fragments.push(fragment);
+    }
+
+    if (exeptional && indexOfExeptional !== undefined) {
+      fragments.push(exeptional);
+      start = indexOfExeptional + exeptional.length;
+    }
+  }
+
+  const syllables = fragments.map(splitIntoSyllables);
+  const flattenedSyllables = new Array<string>().concat(...syllables);
+
+  // Return replacing the special character with their corresponding letter combination
+  return flattenedSyllables.map(splitDigrams);
 }
