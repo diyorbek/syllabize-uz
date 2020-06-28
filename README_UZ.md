@@ -29,7 +29,7 @@ yarn add syllabize-uz
 
 ## Foydalanish
 
-Biblioteka yagona funksiyani taqdim qiladi: `syllabize(word)`
+Kutubxona yagona funksiyani taqdim qiladi: `syllabize(word)`
 
 ```
 import { syllabize } from "syllabize-uz";
