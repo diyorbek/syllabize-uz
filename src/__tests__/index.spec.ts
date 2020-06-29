@@ -50,7 +50,7 @@ describe('`NG`-word splitting', () => {
     ${'ko`ngil'}         | ${`k${o_}${n_}il`}
     ${'ko`ngilsiz'}      | ${`k${o_}${n_}ilsiz`}
     ${'beko`ngildan'}    | ${`bek${o_}${n_}ildan`}
-    ${'bodringingdan'}   | ${`bodri${n_}i${n_}dan`}
+    ${'bodringingning'}  | ${`bodri${n_}i${n_}ni${n_}`}
     ${'pulingiz'}        | ${`puli${n_}iz`}
     ${'pulingizga'}      | ${`puli${n_}izga`}
     ${'tungi'}           | ${`tungi`}
@@ -58,7 +58,6 @@ describe('`NG`-word splitting', () => {
     ${'dengizdan'}       | ${`de${n_}izdan`}
     ${'olingizi'}        | ${`oli${n_}izi`}
     ${'olingizidan'}     | ${`oli${n_}izidan`}
-    ${'olingizlaridan'}  | ${`oli${n_}izlaridan`}
     ${'olingizlarining'} | ${`oli${n_}izlarini${n_}`}
     ${'singilingizning'} | ${`si${n_}ili${n_}izni${n_}` /* It has grammar mistake, just for testing purposes.*/}
   `('[$input] should be split into [$output]', ({ input, output }) => {
@@ -68,7 +67,7 @@ describe('`NG`-word splitting', () => {
   });
 });
 
-describe('exeptional words', () => {
+describe('exceptional words', () => {
   test.each`
     input                                         | output
     ${'kongressokongressmilligrammininggrammasi'} | ${`kon-gress-o-kon-gress-mil-li-gramm-i-ning-gram-ma-si`}

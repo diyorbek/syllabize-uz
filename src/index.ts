@@ -51,7 +51,7 @@ function splitIntoSyllables(fragment: string): string[] {
   const syllables: string[] = [];
 
   let start = 0;
-  // Using same memory slot inside for loop
+  // Use same memory slot inside for loop
   let substring: string;
   let syllablesOfSubstring: string[];
 
@@ -97,10 +97,10 @@ export function syllabize(word: string): string[] {
   // Tests against internally used special characters.
   validateWord(unifiedWord);
 
-  // Map exeptionals with their indices in given word
+  // Map exceptionals with their indices in given word
   const exceptionalsIndices = new Map<number, string>();
 
-  // Using same memory slot inside for-loop
+  // Use same memory slot inside for-loop
   let regex: RegExp;
   let regexMatchArray: RegExpExecArray | null;
   let fragmentInCurrentIndex: string | undefined;
@@ -127,65 +127,63 @@ export function syllabize(word: string): string[] {
     (a, b) => a[0] - b[0],
   );
 
+  // Fragmentize the word into pats which can be syllabized independently.
+  // Integrate non array fragments into one part.
+  // Fragments type `string | string []` because
+  // exceptionals which present ready syllables are kept as is.
   const fragments: Array<string | string[]> = [];
   let fragmentStartIndex = 0;
 
   for (let i = 0; i <= sortedExceptionalsIndices.length; i++) {
-    let exeptional: string | undefined;
-    let indexOfExeptional: number | undefined;
+    let exceptional: string | undefined;
+    let indexOfExceptional: number | undefined;
 
     if (sortedExceptionalsIndices[i]) {
-      [indexOfExeptional, exeptional] = sortedExceptionalsIndices[i];
+      [indexOfExceptional, exceptional] = sortedExceptionalsIndices[i];
     }
 
     const fragment = unifiedWord.substring(
       fragmentStartIndex,
-      indexOfExeptional,
+      indexOfExceptional,
     );
 
     if (fragment.length) {
-      fragments.push(fragment);
+      if (typeof fragments[fragments.length - 1] === 'string') {
+        fragments[fragments.length - 1] += fragment;
+      } else {
+        fragments.push(fragment);
+      }
     }
 
-    if (exeptional && indexOfExeptional !== undefined) {
-      fragments.push(
-        EXCEPTIONAL_WORDS[exeptional].alternative ||
-          EXCEPTIONAL_WORDS[exeptional].always || [exeptional],
-      );
-      fragmentStartIndex = indexOfExeptional + exeptional.length;
+    if (exceptional && indexOfExceptional !== undefined) {
+      const { alternative, always } = EXCEPTIONAL_WORDS[exceptional];
+
+      if (alternative) {
+        if (typeof fragments[fragments.length - 1] === 'string') {
+          fragments[fragments.length - 1] += alternative;
+        } else {
+          fragments.push(alternative);
+        }
+      } else if (always) {
+        fragments.push(always);
+      } else {
+        fragments.push(exceptional);
+      }
+
+      fragmentStartIndex = indexOfExceptional + exceptional.length;
     }
   }
 
-  // Integrate non array fragments int one part
-  const joinedFragments: Array<string | string[]> = [];
-  let joinedFragment = '';
-  let fragmentJoinStartIndex = 0;
+  const syllables: string[] = [];
 
-  for (let i = 0; i <= fragments.length; i++) {
-    if (typeof fragments[i] !== 'string') {
-      joinedFragment = fragments.slice(fragmentJoinStartIndex, i).join('');
-      if (joinedFragment) {
-        joinedFragments.push(joinedFragment);
-      }
-
-      if (fragments[i]) {
-        joinedFragments.push(fragments[i]);
-      }
-
-      fragmentJoinStartIndex = i + 1;
-    }
-  }
-
-  const syllables = joinedFragments.map((fragment) => {
+  fragments.forEach((fragment) => {
     if (typeof fragment === 'string') {
-      return splitIntoSyllables(fragment);
+      syllables.push(...splitIntoSyllables(fragment));
+    } else {
+      syllables.push(...fragment);
     }
-
-    return fragment;
   });
 
-  const flattenedSyllables = new Array<string>().concat(...syllables);
-
   // Return replacing the special character with their corresponding letter combination
-  return flattenedSyllables.map(splitDigrams);
+  return syllables.map(splitDigrams);
 }
