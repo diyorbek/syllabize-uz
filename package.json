@@ -1,6 +1,6 @@
 {
   "name": "syllabize-uz",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Library for dividing Uzbek words into syllables. Oʻzbekcha soʻzlarni boʻgʻinlarga ajratish.",
   "author": "Diyorbek Sadullaev <diyorbek3377@gmail.com>",
   "repository": "git@github.com:Diyorbek/syllabize-uz.git",
