@@ -7,7 +7,7 @@
 [![](https://img.shields.io/bundlephobia/minzip/syllabize-uz)](https://bundlephobia.com/result?p=syllabize-uz)
 [![](https://img.shields.io/npm/l/syllabize-uz)](https://npmjs.com/syllabize-uz)
 
-Library for dividing Uzbek words into syllables.
+Library for dividing Uzbek words into syllables. Used at [Fonetika.Uz](https://fonetika.uz/).
 
 ### Read in
 
