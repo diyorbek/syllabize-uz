@@ -31,7 +31,7 @@ yarn add syllabize-uz
 
 Library provides a single function: `syllabize(word)`
 
-```
+```js
 import { syllabize } from "syllabize-uz";
 
 const syllables = syllabize("olmaxon"); // ["ol", "ma", "xon"]
