@@ -31,7 +31,7 @@ yarn add syllabize-uz
 
 Kutubxona yagona funksiyani taqdim qiladi: `syllabize(word)`
 
-```
+```js
 import { syllabize } from "syllabize-uz";
 
 const syllables = syllabize("olmaxon"); // ["ol", "ma", "xon"]
