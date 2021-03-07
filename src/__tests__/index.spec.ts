@@ -44,7 +44,7 @@ describe('genenal syllablification structure', () => {
   );
 });
 
-describe('`NG`-word splitting', () => {
+describe('`NG`-word splitting and exceptions', () => {
   test.each`
     input                | output
     ${'ko`ngil'}         | ${`k${o_}${n_}il`}
@@ -54,13 +54,33 @@ describe('`NG`-word splitting', () => {
     ${'pulingiz'}        | ${`puli${n_}iz`}
     ${'pulingizga'}      | ${`puli${n_}izga`}
     ${'tungi'}           | ${`tungi`}
-    ${'rangi'}           | ${`ra${n_}i`}
     ${'dengizdan'}       | ${`de${n_}izdan`}
     ${'olingizi'}        | ${`oli${n_}izi`}
     ${'olingizidan'}     | ${`oli${n_}izidan`}
     ${'olingizlarining'} | ${`oli${n_}izlarini${n_}`}
     ${'singilingizning'} | ${`si${n_}ili${n_}izni${n_}` /* It has grammar mistake, just for testing purposes.*/}
-  `('[$input] should be split into [$output]', ({ input, output }) => {
+  `('[$input] should be transformed into [$output]', ({ input, output }) => {
+    const result = unifyDigrams(input);
+
+    expect(result).toBe(output);
+  });
+});
+
+describe('`NG`-ended nouns with suffixes and exceptions', () => {
+  test.each`
+    input               | output
+    ${'bodringingning'} | ${`bodri${n_}i${n_}ni${n_}`}
+    ${'rangingning'}    | ${`ra${n_}i${n_}ni${n_}`}
+    ${'tengingning'}    | ${`te${n_}i${n_}ni${n_}`}
+    ${'garangingning'}  | ${`gara${n_}i${n_}ni${n_}`}
+    ${'gurungingning'}  | ${`guru${n_}i${n_}ni${n_}`}
+    ${'tongingning'}    | ${`to${n_}i${n_}ni${n_}`}
+    ${'mingingning'}    | ${`mi${n_}i${n_}ni${n_}`}
+    ${'ringingning'}    | ${`ri${n_}i${n_}ni${n_}`}
+    ${'yengingning'}    | ${`ye${n_}i${n_}ni${n_}`}
+    ${'yengizlar'}      | ${`ye${n_}izlar` /* verb */}
+    ${"go'ngingning"}   | ${`g${o_}${n_}i${n_}ni${n_}`}
+  `('[$input] should be transformed into [$output]', ({ input, output }) => {
     const result = unifyDigrams(input);
 
     expect(result).toBe(output);
@@ -75,6 +95,8 @@ describe('exceptional words', () => {
     ${'inglizlarga'}                              | ${`in-gliz-lar-ga`}
     ${'kilogrammfonogrammang'}                    | ${`ki-lo-gramm-fo-no-gram-mang`}
     ${'dramanglama'}                              | ${`dra-mang-la-ma`}
+    ${'kadrimiz'}                                 | ${`kadr-i-miz`}
+    ${'kadrlarimiz'}                              | ${`kadr-la-ri-miz`}
   `('[$input] should be split into [$output]', ({ input, output }) => {
     expect(syllabize(input).join('-')).toBe(output);
   });

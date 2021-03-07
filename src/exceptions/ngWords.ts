@@ -11,6 +11,11 @@ const NG_WORDS = [
   'teng',
   'garang',
   'gurung',
+  'tong',
+  'ming',
+  'ring',
+  'yeng', // noun
+  `g${o_}ng`,
 ];
 
 const SUFFIXES = ['ning', 'ni', 'ga', 'da', 'dan'];

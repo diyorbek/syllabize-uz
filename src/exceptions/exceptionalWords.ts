@@ -29,7 +29,6 @@ export const EXCEPTIONAL_WORDS: Record<string, Exception> = {
   ['drama']: { alternative: normalizeExceptionalCombination('drama', 'dr') },
   ['ingliz']: { alternative: normalizeExceptionalCombination('ingliz', 'gl') },
   ['gramma']: { alternative: normalizeExceptionalCombination('gramma', 'gr') },
-  ['kongress']: {
-    always: ['kon', 'gress'],
-  },
+  ['kongress']: { always: ['kon', 'gress'] },
+  ['kadr']: { always: ['kadr'] },
 };
