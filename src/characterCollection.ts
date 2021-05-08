@@ -1,8 +1,8 @@
-// Special symbols of digrams
+// Special symbols of bigrams
 export const APOSTROPHE = String.fromCharCode(700);
 export const TURNED_COMMA = String.fromCharCode(699);
 
-// Replacement characters for digrams
+// Replacement characters for bigrams
 export const C_CEDILLA_SMALL = 'ç';
 export const S_CEDILLA_SMALL = 'ş';
 export const G_BREVE_SMALL = 'ğ';

@@ -27,6 +27,7 @@ const NG_REGX = new RegExp(
   'g',
 );
 
+/** Replace `ng` bigram with a special character */
 export function unifyNG(word: string): string {
   const match = word.match(NG_REGX);
 

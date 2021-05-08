@@ -5,18 +5,27 @@ import {
   M_HOOK_SMALL,
 } from '../characterCollection';
 
-const EXCEPTIONAL_COMBINATIONS: Record<string, string> = {
+type EXCEPTIONAL_COMBINATION = 'dr' | 'gr' | 'gl' | 'mm';
+
+// Exceptional combinations and their unique special character
+const EXCEPTIONAL_COMBINATIONS: Record<EXCEPTIONAL_COMBINATION, string> = {
   ['dr']: R_CEDILLA_SMALL,
   ['gr']: R_ACUTE_SMALL,
   ['gl']: L_ACUTE_SMALL,
   ['mm']: M_HOOK_SMALL,
 };
 
-const EXCEPTIONAL_COMBINATIONS_REPLACEMENTS: Record<string, string> = {};
-for (const combination in EXCEPTIONAL_COMBINATIONS) {
-  EXCEPTIONAL_COMBINATIONS_REPLACEMENTS[
-    EXCEPTIONAL_COMBINATIONS[combination]
-  ] = combination;
+// Inverse key-value pairs of `EXCEPTIONAL_COMBINATIONS`
+const EXCEPTIONAL_COMBINATIONS_REPLACEMENTS: Record<
+  string,
+  EXCEPTIONAL_COMBINATION
+> = {};
+
+for (const key in EXCEPTIONAL_COMBINATIONS) {
+  const combination = key as EXCEPTIONAL_COMBINATION;
+  const replacement = EXCEPTIONAL_COMBINATIONS[combination];
+
+  EXCEPTIONAL_COMBINATIONS_REPLACEMENTS[replacement] = combination;
 }
 
 const EXCEPTION_REPLACEMENT_REGEX = new RegExp(
@@ -24,9 +33,10 @@ const EXCEPTION_REPLACEMENT_REGEX = new RegExp(
   'g',
 );
 
+/** Unifies exceptional combination with its corresponding special character */
 export function normalizeExceptionalCombination(
   word: string,
-  combination: string,
+  combination: EXCEPTIONAL_COMBINATION,
 ): string {
   const replacement = EXCEPTIONAL_COMBINATIONS[combination];
 
@@ -37,6 +47,7 @@ export function normalizeExceptionalCombination(
   return word;
 }
 
+/** Replaces special characters with their corresponding exceptional combination. */
 export function splitReplacements(word: string): string {
   return word.replace(
     EXCEPTION_REPLACEMENT_REGEX,

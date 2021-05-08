@@ -49,3 +49,6 @@ typings/
 
 # Builds
 dist/
+
+# other
+.DS_Store

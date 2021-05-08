@@ -10,7 +10,11 @@ import {
 import { unifyNG } from './exceptions/ngWords';
 import { splitReplacements } from './exceptions/exceptionalCombinations';
 
-export function unifyDigrams(word: string): string {
+/**
+ * Make letter combinations a single special character.
+ * Fix apostrophes.
+ *  */
+export function unifyBigrams(word: string): string {
   return unifyNG(
     word
       .toLowerCase()
@@ -22,7 +26,8 @@ export function unifyDigrams(word: string): string {
   );
 }
 
-export function splitDigrams(text: string): string {
+/**  Replace the special character with their corresponding letter combination */
+export function splitBigrams(text: string): string {
   return splitReplacements(
     text
       .replace(new RegExp(G_BREVE_SMALL, 'g'), `g${TURNED_COMMA}`)
@@ -45,6 +50,11 @@ const wordValidateRegExp = new RegExp(
   }]`,
 );
 
+/**
+ * Checks if given word consists of word characters
+ * and internally used special characters.
+ * Throws exception if word is not valid.
+ */
 export function validateWord(word: string): void | never {
   if (wordValidateRegExp.test(word)) {
     throw new Error('Given string contains non-word-character.');

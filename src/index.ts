@@ -1,4 +1,4 @@
-import { unifyDigrams, splitDigrams, validateWord } from './utils';
+import { unifyBigrams, splitBigrams, validateWord } from './utils';
 import { APOSTROPHE, VOVELS } from './characterCollection';
 import { EXCEPTIONAL_WORDS } from './exceptions/exceptionalWords';
 
@@ -90,11 +90,8 @@ export function syllabize(word: string): string[] {
     return [];
   }
 
-  // Make letter combinations a single special character
-  const unifiedWord = unifyDigrams(word);
+  const unifiedWord = unifyBigrams(word);
 
-  // Checks if given word consists of word characters.
-  // Tests against internally used special characters.
   validateWord(unifiedWord);
 
   // Map exceptionals with their indices in given word
@@ -127,10 +124,13 @@ export function syllabize(word: string): string[] {
     (a, b) => a[0] - b[0],
   );
 
-  // Fragmentize the word into pats which can be syllabized independently.
-  // Integrate non array fragments into one part.
-  // Fragments type `string | string []` because
-  // exceptionals which present ready syllables are kept as is.
+  // #region Fragmentize
+  /**
+   * Fragmentize the word into parts which can be syllabized independently.
+   * Integrate non array fragments into one part.
+   * Fragments type `string | string []` because
+   * exceptionals which present ready syllables are kept as is.
+   */
   const fragments: Array<string | string[]> = [];
   let fragmentStartIndex = 0;
 
@@ -173,6 +173,7 @@ export function syllabize(word: string): string[] {
       fragmentStartIndex = indexOfExceptional + exceptional.length;
     }
   }
+  // #endregion
 
   const syllables: string[] = [];
 
@@ -184,6 +185,5 @@ export function syllabize(word: string): string[] {
     }
   });
 
-  // Return replacing the special character with their corresponding letter combination
-  return syllables.map(splitDigrams);
+  return syllables.map(splitBigrams);
 }

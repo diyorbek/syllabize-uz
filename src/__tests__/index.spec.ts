@@ -1,5 +1,5 @@
 import { syllabize } from '../index';
-import { unifyDigrams } from '../utils';
+import { unifyBigrams } from '../utils';
 import {
   O_TILDE_SMALL as o_,
   N_TILDE_SMALL as n_,
@@ -60,7 +60,7 @@ describe('`NG`-word splitting and exceptions', () => {
     ${'olingizlarining'} | ${`oli${n_}izlarini${n_}`}
     ${'singilingizning'} | ${`si${n_}ili${n_}izni${n_}` /* It has grammar mistake, just for testing purposes.*/}
   `('[$input] should be transformed into [$output]', ({ input, output }) => {
-    const result = unifyDigrams(input);
+    const result = unifyBigrams(input);
 
     expect(result).toBe(output);
   });
@@ -81,7 +81,7 @@ describe('`NG`-ended nouns with suffixes and exceptions', () => {
     ${'yengizlar'}      | ${`ye${n_}izlar` /* verb */}
     ${"go'ngingning"}   | ${`g${o_}${n_}i${n_}ni${n_}`}
   `('[$input] should be transformed into [$output]', ({ input, output }) => {
-    const result = unifyDigrams(input);
+    const result = unifyBigrams(input);
 
     expect(result).toBe(output);
   });
