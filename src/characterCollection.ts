@@ -10,6 +10,8 @@ export const O_TILDE_SMALL = 'õ';
 export const N_TILDE_SMALL = 'ñ';
 
 export const VOVELS = 'aoueiõ';
+export const LATIN_VOVELS = 'aoueiõ';
+export const CYRILLIC_VOVELS = 'аеёиоуэюяў';
 
 // Replacement characters for exceptional letter sequences
 export const R_CEDILLA_SMALL = 'ŗ';
