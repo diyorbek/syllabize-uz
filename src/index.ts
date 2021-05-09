@@ -1,4 +1,10 @@
-import { unifyBigrams, splitBigrams, validateWord } from './utils';
+import {
+  unifyBigrams,
+  splitBigrams,
+  validateWord,
+  generateCaseMap,
+  applyCaseMap,
+} from './utils';
 import { APOSTROPHE, VOVELS } from './characterCollection';
 import { EXCEPTIONAL_WORDS } from './exceptions/exceptionalWords';
 
@@ -185,5 +191,7 @@ export function syllabize(word: string): string[] {
     }
   });
 
-  return syllables.map(splitBigrams);
+  const caseMap = generateCaseMap(word);
+
+  return applyCaseMap(syllables.map(splitBigrams), caseMap);
 }

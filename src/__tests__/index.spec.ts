@@ -1,11 +1,6 @@
 import { syllabize } from '../index';
-import { unifyBigrams } from '../utils';
-import {
-  O_TILDE_SMALL as o_,
-  N_TILDE_SMALL as n_,
-  APOSTROPHE as aps,
-  TURNED_COMMA as tcm,
-} from '../characterCollection';
+
+import { APOSTROPHE as aps, TURNED_COMMA as tcm } from '../characterCollection';
 
 describe('genenal syllablification structure', () => {
   test.each`
@@ -44,49 +39,6 @@ describe('genenal syllablification structure', () => {
   );
 });
 
-describe('`NG`-word splitting and exceptions', () => {
-  test.each`
-    input                | output
-    ${'ko`ngil'}         | ${`k${o_}${n_}il`}
-    ${'ko`ngilsiz'}      | ${`k${o_}${n_}ilsiz`}
-    ${'beko`ngildan'}    | ${`bek${o_}${n_}ildan`}
-    ${'bodringingning'}  | ${`bodri${n_}i${n_}ni${n_}`}
-    ${'pulingiz'}        | ${`puli${n_}iz`}
-    ${'pulingizga'}      | ${`puli${n_}izga`}
-    ${'tungi'}           | ${`tungi`}
-    ${'dengizdan'}       | ${`de${n_}izdan`}
-    ${'olingizi'}        | ${`oli${n_}izi`}
-    ${'olingizidan'}     | ${`oli${n_}izidan`}
-    ${'olingizlarining'} | ${`oli${n_}izlarini${n_}`}
-    ${'singilingizning'} | ${`si${n_}ili${n_}izni${n_}` /* It has grammar mistake, just for testing purposes.*/}
-  `('[$input] should be transformed into [$output]', ({ input, output }) => {
-    const result = unifyBigrams(input);
-
-    expect(result).toBe(output);
-  });
-});
-
-describe('`NG`-ended nouns with suffixes and exceptions', () => {
-  test.each`
-    input               | output
-    ${'bodringingning'} | ${`bodri${n_}i${n_}ni${n_}`}
-    ${'rangingning'}    | ${`ra${n_}i${n_}ni${n_}`}
-    ${'tengingning'}    | ${`te${n_}i${n_}ni${n_}`}
-    ${'garangingning'}  | ${`gara${n_}i${n_}ni${n_}`}
-    ${'gurungingning'}  | ${`guru${n_}i${n_}ni${n_}`}
-    ${'tongingning'}    | ${`to${n_}i${n_}ni${n_}`}
-    ${'mingingning'}    | ${`mi${n_}i${n_}ni${n_}`}
-    ${'ringingning'}    | ${`ri${n_}i${n_}ni${n_}`}
-    ${'yengingning'}    | ${`ye${n_}i${n_}ni${n_}`}
-    ${'yengizlar'}      | ${`ye${n_}izlar` /* verb */}
-    ${"go'ngingning"}   | ${`g${o_}${n_}i${n_}ni${n_}`}
-  `('[$input] should be transformed into [$output]', ({ input, output }) => {
-    const result = unifyBigrams(input);
-
-    expect(result).toBe(output);
-  });
-});
-
 describe('exceptional words', () => {
   test.each`
     input                                         | output
@@ -97,6 +49,45 @@ describe('exceptional words', () => {
     ${'dramanglama'}                              | ${`dra-mang-la-ma`}
     ${'kadrimiz'}                                 | ${`kadr-i-miz`}
     ${'kadrlarimiz'}                              | ${`kadr-la-ri-miz`}
+  `('[$input] should be split into [$output]', ({ input, output }) => {
+    expect(syllabize(input).join('-')).toBe(output);
+  });
+});
+
+describe('preserve casing', () => {
+  test.each`
+    input                 | output
+    ${'A'}                | ${'A'}
+    ${'ABAA'}             | ${'A-BA-A'}
+    ${'G’azab'}           | ${`G${tcm}a-zab`}
+    ${'OG’IZ'}            | ${`O-G${tcm}IZ`}
+    ${'O’G’RI'}           | ${`O${tcm}G${tcm}-RI`}
+    ${'O’g’ri'}           | ${`O${tcm}g${tcm}-ri`}
+    ${'o’G’RI'}           | ${`o${tcm}G${tcm}-RI`}
+    ${'TO’G’RI'}          | ${`TO${tcm}G${tcm}-RI`}
+    ${'tO’g’ri'}          | ${`tO${tcm}g${tcm}-ri`}
+    ${'Shior'}            | ${'Shi-or'}
+    ${'SHOIR'}            | ${'SHO-IR'}
+    ${'HASHAR'}           | ${'HA-SHAR'}
+    ${'HAShAR'}           | ${'HA-ShAR'}
+    ${'HAsHAR'}           | ${'HA-sHAR'}
+    ${'HACHIR'}           | ${'HA-CHIR'}
+    ${'HAcHIR'}           | ${'HA-cHIR'}
+    ${'HaChIr'}           | ${'Ha-ChIr'}
+    ${'iSHla'}            | ${'iSH-la'}
+    ${'iShla'}            | ${'iSh-la'}
+    ${'Chaqir'}           | ${'Cha-qir'}
+    ${'CHaqir'}           | ${'CHa-qir'}
+    ${'CHAQIR'}           | ${'CHA-QIR'}
+    ${'ChAQIR'}           | ${'ChA-QIR'}
+    ${'MINGGA'}           | ${'MING-GA'}
+    ${'KELIng'}           | ${'KE-LIng'}
+    ${'keliNG'}           | ${'ke-liNG'}
+    ${'toNGi'}            | ${'to-NGi'}
+    ${'toNgi'}            | ${'to-Ngi'}
+    ${'tonGi'}            | ${'to-nGi'}
+    ${'iNglizninG'}       | ${'iN-gliz-ninG'}
+    ${'mELodRamalarniNg'} | ${'mE-Lo-dRa-ma-lar-niNg'}
   `('[$input] should be split into [$output]', ({ input, output }) => {
     expect(syllabize(input).join('-')).toBe(output);
   });
