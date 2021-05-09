@@ -13,7 +13,7 @@ import { splitReplacements } from './exceptions/exceptionalCombinations';
 /**
  * Make letter combinations a single special character.
  * Fix apostrophes.
- *  */
+ */
 export function unifyBigrams(word: string): string {
   return unifyNG(
     word
