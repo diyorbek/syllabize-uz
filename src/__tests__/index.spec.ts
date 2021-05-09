@@ -53,3 +53,42 @@ describe('exceptional words', () => {
     expect(syllabize(input).join('-')).toBe(output);
   });
 });
+
+describe('preserve casing', () => {
+  test.each`
+    input                 | output
+    ${'A'}                | ${'A'}
+    ${'ABAA'}             | ${'A-BA-A'}
+    ${'G’azab'}           | ${`G${tcm}a-zab`}
+    ${'OG’IZ'}            | ${`O-G${tcm}IZ`}
+    ${'O’G’RI'}           | ${`O${tcm}G${tcm}-RI`}
+    ${'O’g’ri'}           | ${`O${tcm}g${tcm}-ri`}
+    ${'o’G’RI'}           | ${`o${tcm}G${tcm}-RI`}
+    ${'TO’G’RI'}          | ${`TO${tcm}G${tcm}-RI`}
+    ${'tO’g’ri'}          | ${`tO${tcm}g${tcm}-ri`}
+    ${'Shior'}            | ${'Shi-or'}
+    ${'SHOIR'}            | ${'SHO-IR'}
+    ${'HASHAR'}           | ${'HA-SHAR'}
+    ${'HAShAR'}           | ${'HA-ShAR'}
+    ${'HAsHAR'}           | ${'HA-sHAR'}
+    ${'HACHIR'}           | ${'HA-CHIR'}
+    ${'HAcHIR'}           | ${'HA-cHIR'}
+    ${'HaChIr'}           | ${'Ha-ChIr'}
+    ${'iSHla'}            | ${'iSH-la'}
+    ${'iShla'}            | ${'iSh-la'}
+    ${'Chaqir'}           | ${'Cha-qir'}
+    ${'CHaqir'}           | ${'CHa-qir'}
+    ${'CHAQIR'}           | ${'CHA-QIR'}
+    ${'ChAQIR'}           | ${'ChA-QIR'}
+    ${'MINGGA'}           | ${'MING-GA'}
+    ${'KELIng'}           | ${'KE-LIng'}
+    ${'keliNG'}           | ${'ke-liNG'}
+    ${'toNGi'}            | ${'to-NGi'}
+    ${'toNgi'}            | ${'to-Ngi'}
+    ${'tonGi'}            | ${'to-nGi'}
+    ${'iNglizninG'}       | ${'iN-gliz-ninG'}
+    ${'mELodRamalarniNg'} | ${'mE-Lo-dRa-ma-lar-niNg'}
+  `('[$input] should be split into [$output]', ({ input, output }) => {
+    expect(syllabize(input).join('-')).toBe(output);
+  });
+});

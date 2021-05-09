@@ -14,6 +14,7 @@ describe('`NG`-word splitting and exceptions', () => {
     ${'pulingiz'}        | ${`puli${n_}iz`}
     ${'pulingizga'}      | ${`puli${n_}izga`}
     ${'tungi'}           | ${`tungi`}
+    ${'tongi'}           | ${`to${n_}i`}
     ${'dengizdan'}       | ${`de${n_}izdan`}
     ${'olingizi'}        | ${`oli${n_}izi`}
     ${'olingizidan'}     | ${`oli${n_}izidan`}
