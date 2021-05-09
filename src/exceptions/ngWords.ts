@@ -29,13 +29,7 @@ const NG_REGX = new RegExp(
 
 /** Replace `ng` bigram with a special character */
 export function unifyNG(word: string): string {
-  const match = word.match(NG_REGX);
-
-  if (match) {
-    match.forEach((m) => {
-      word = word.replace(m, m.replace(/ng/g, N_TILDE_SMALL));
-    });
-  }
-
-  return word;
+  return word.replace(NG_REGX, (matchString) =>
+    matchString.replace(/ng/g, N_TILDE_SMALL),
+  );
 }
