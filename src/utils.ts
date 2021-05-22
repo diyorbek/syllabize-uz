@@ -10,6 +10,10 @@ import {
 import { unifyNG } from './exceptions/ngWords';
 import { splitReplacements } from './exceptions/exceptionalCombinations';
 
+function isLowerCase(str: string) {
+  return str.toLowerCase() === str;
+}
+
 /**
  * Make letter combinations a single special character.
  * Fix apostrophes.
@@ -38,7 +42,7 @@ export function splitBigrams(text: string): string {
   );
 }
 
-const wordValidateRegExp = new RegExp(
+const latinWordValidateRegExp = new RegExp(
   `[^a-zA-Z\\-${
     APOSTROPHE +
     TURNED_COMMA +
@@ -51,19 +55,15 @@ const wordValidateRegExp = new RegExp(
 );
 
 /**
- * Checks if given word consists of word characters
+ * Checks if given word consists of latin word characters
  * and internally used special characters.
  * Throws exception if word is not valid.
  */
-export function validateWord(word: string): void | never {
-  if (wordValidateRegExp.test(word)) {
+export function validateLatinWord(word: string): void | never {
+  if (latinWordValidateRegExp.test(word)) {
     throw new Error('Given string contains non-word-character.');
   }
 }
-
-export type PickProp<T, K extends keyof T> = {
-  [key in keyof Omit<T, K>]?: never;
-};
 
 /** Generates array of boolean values in which `true` indicates to an upper-case character */
 export function generateCaseMap(word: string): boolean[] {
@@ -87,4 +87,67 @@ export function applyCaseMap(
 
     return casedSyllable;
   });
+}
+
+const cyrillicWordValidateRegExp = /[^\u0400-\u04FF\-]/i;
+
+/**
+ * Checks if given word consists of cyrillic word characters
+ * and internally used special characters.
+ * Throws exception if word is not valid.
+ */
+export function validateCyrillicWord(word: string): void | never {
+  if (cyrillicWordValidateRegExp.test(word)) {
+    throw new Error('Given string contains non-word-character.');
+  }
+}
+
+/**
+ * Drops soft sign and makes its left-ajacent
+ * letter upper-case for later indication
+ */
+export function hideSoftSign(cyrillicWord: string): string {
+  return cyrillicWord
+    .toLowerCase()
+    .replace(/[\u0400-\u04FF]ь/gi, (matchString) =>
+      matchString.charAt(0).toUpperCase(),
+    );
+}
+
+/**
+ * Adds soft sign to the right of upper-case character
+ */
+export function recoverSoftSign(cyrillicWord: string): string {
+  return cyrillicWord.replace(/[\u0400-\u04FF]/gi, (char) =>
+    isLowerCase(char) ? char : `${char.toLowerCase()}ь`,
+  );
+}
+
+/**
+ * Splits cyrillic vovels with 2 phonemas (я,ё,ю,е)
+ * into 2 letters (ya,yo,yu,ye) to correctly calculate
+ * consonant distance between 2 vovels.
+ */
+export function extractCyrillicVovelConsonant(cyrillicWord: string): string {
+  return cyrillicWord
+    .replace(/^е/gi, 'yе')
+    .replace(/[аеёиоуэюяў]е/gi, (matchString) => `${matchString.charAt(0)}yе`)
+    .replace(/я/gi, 'yа')
+    .replace(/ё/gi, 'yо')
+    .replace(/ю/gi, 'yу');
+}
+
+/**
+ * Splits cyrillic vovels with 2 phonemas (я,ё,ю,е)
+ * into 2 letters (ya,yo,yu,ye) to correctly calculate
+ * consonant distance between 2 vovels.
+ */
+export function unifyExtractCyrillicVovelConsonant(
+  cyrillicWord: string,
+): string {
+  return cyrillicWord
+    .replace(/yе/gi, 'е')
+    .replace(/yа/gi, 'я')
+    .replace(/yо/gi, 'ё')
+    .replace(/yу/gi, 'ю');
 }

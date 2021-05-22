@@ -1,5 +1,13 @@
-import { unifyBigrams, splitBigrams, validateWord } from './utils';
-import { APOSTROPHE, VOVELS } from './characterCollection';
+import {
+  generateCaseMap,
+  applyCaseMap,
+  validateCyrillicWord,
+  hideSoftSign,
+  extractCyrillicVovelConsonant,
+  unifyExtractCyrillicVovelConsonant,
+  recoverSoftSign,
+} from './utils';
+import { CYRILLIC_HARD_SIGN, CYRILLIC_VOVELS } from './characterCollection';
 import { EXCEPTIONAL_WORDS } from './exceptions/exceptionalWords';
 
 function findVovelIndices(word: string): number[] {
@@ -9,7 +17,7 @@ function findVovelIndices(word: string): number[] {
   for (let index = 0; index < wordLength; index++) {
     const char = word[index];
 
-    if (VOVELS.includes(char)) {
+    if (CYRILLIC_VOVELS.includes(char)) {
       vovelIndices.push(index);
     }
   }
@@ -57,7 +65,7 @@ function splitIntoSyllables(fragment: string): string[] {
 
   for (let i = 0; i <= fragment.length; i++) {
     if (
-      fragment[i] === APOSTROPHE ||
+      fragment[i] === CYRILLIC_HARD_SIGN ||
       fragment[i] === '-' ||
       i === fragment.length
     ) {
@@ -69,7 +77,7 @@ function splitIntoSyllables(fragment: string): string[] {
 
       if (
         syllablesOfSubstring[syllablesOfSubstring.length - 1].length &&
-        fragment[i] === APOSTROPHE
+        fragment[i] === CYRILLIC_HARD_SIGN
       ) {
         syllablesOfSubstring[syllablesOfSubstring.length - 1] += fragment[i];
       }
@@ -85,14 +93,14 @@ function splitIntoSyllables(fragment: string): string[] {
   return syllables;
 }
 
-export function syllabizeCyrillic(word: string): string[] {
+export function syllabize(word: string): string[] {
   if (word.length === 0) {
     return [];
   }
 
-  const unifiedWord = unifyBigrams(word);
+  validateCyrillicWord(word);
 
-  validateWord(unifiedWord);
+  const unifiedWord = extractCyrillicVovelConsonant(hideSoftSign(word));
 
   // Map exceptionals with their indices in given word
   const exceptionalsIndices = new Map<number, string>();
@@ -185,5 +193,10 @@ export function syllabizeCyrillic(word: string): string[] {
     }
   });
 
-  return syllables.map(splitBigrams);
+  const caseMap = generateCaseMap(word);
+
+  return applyCaseMap(
+    syllables.map(unifyExtractCyrillicVovelConsonant).map(recoverSoftSign),
+    caseMap,
+  );
 }

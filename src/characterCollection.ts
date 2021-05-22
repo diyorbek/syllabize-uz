@@ -2,6 +2,9 @@
 export const APOSTROPHE = String.fromCharCode(700);
 export const TURNED_COMMA = String.fromCharCode(699);
 
+export const CYRILLIC_HARD_SIGN = 'ъ';
+export const CYRILLIC_SOFT_SIGN = 'ь';
+
 // Replacement characters for bigrams
 export const C_CEDILLA_SMALL = 'ç';
 export const S_CEDILLA_SMALL = 'ş';

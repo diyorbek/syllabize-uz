@@ -1,7 +1,7 @@
 import {
   unifyBigrams,
   splitBigrams,
-  validateWord,
+  validateLatinWord,
   generateCaseMap,
   applyCaseMap,
 } from './utils';
@@ -98,7 +98,7 @@ export function syllabize(word: string): string[] {
 
   const unifiedWord = unifyBigrams(word);
 
-  validateWord(unifiedWord);
+  validateLatinWord(unifiedWord);
 
   // Map exceptionals with their indices in given word
   const exceptionalsIndices = new Map<number, string>();
