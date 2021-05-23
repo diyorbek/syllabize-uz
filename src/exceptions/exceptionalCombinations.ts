@@ -1,9 +1,9 @@
 import {
-  R_CEDILLA_SMALL,
   L_ACUTE_SMALL,
-  R_ACUTE_SMALL,
   M_HOOK_SMALL,
-} from '../characterCollection';
+  R_ACUTE_SMALL,
+  R_CEDILLA_SMALL,
+} from '../utils/characterCollection';
 
 type EXCEPTIONAL_COMBINATION = 'dr' | 'gr' | 'gl' | 'mm';
 

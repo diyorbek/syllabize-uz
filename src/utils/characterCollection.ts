@@ -21,3 +21,5 @@ export const R_CEDILLA_SMALL = 'ŗ';
 export const R_ACUTE_SMALL = 'ŕ';
 export const L_ACUTE_SMALL = 'ĺ';
 export const M_HOOK_SMALL = 'ɱ';
+
+export type CharType = 'latin' | 'cyrillic';

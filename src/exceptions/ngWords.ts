@@ -1,4 +1,7 @@
-import { O_TILDE_SMALL as o_, N_TILDE_SMALL } from '../characterCollection';
+import {
+  N_TILDE_SMALL,
+  O_TILDE_SMALL as o_,
+} from '../utils/characterCollection';
 
 // [EN] Words where 'NG' comes as a single consonant. This list is not complete. Feel free to send PR for improvements.
 // [UZ] 'NG' tovush sifatida kelgan so'zlar. Ro'yhat to'liq emas. Agar tuzatish kiritishni xohlasangiz bemalol PR jonatishingiz mumkin.

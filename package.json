@@ -41,6 +41,7 @@
     "husky": "^4.2.5",
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
+    "prettier-plugin-organize-imports": "^2.1.0",
     "ts-jest": "^26.1.0",
     "typescript": "^3.9.3"
   },

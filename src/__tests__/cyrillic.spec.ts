@@ -1,8 +1,9 @@
-import { syllabize } from '../syllabizeCyrillic';
+import { syllabizeCyrillic } from '../index';
 
 describe('general', () => {
   test.each`
     input            | output
+    ${''}            | ${''}
     ${'А'}           | ${'А'}
     ${'АБАА'}        | ${'А-БА-А'}
     ${'Ғазаб'}       | ${'Ға-заб'}
@@ -14,6 +15,7 @@ describe('general', () => {
     ${'ҲАшАР'}       | ${'ҲА-шАР'}
     ${'Чақир'}       | ${'Ча-қир'}
     ${'келиН'}       | ${'ке-лиН'}
+    ${'алое'}        | ${'а-ло-е'}
     ${'таямма'}      | ${'та-ям-ма'}
     ${'таёмма'}      | ${'та-ём-ма'}
     ${'таюмма'}      | ${'та-юм-ма'}
@@ -27,6 +29,6 @@ describe('general', () => {
     ${'мўъжизавий'}  | ${'мўъ-жи-за-вий'}
     ${'меъёрдалик'}  | ${'меъ-ёр-да-лик'}
   `('[$input] should be split into [$output]', ({ input, output }) => {
-    expect(syllabize(input).join('-')).toBe(output);
+    expect(syllabizeCyrillic(input).join('-')).toBe(output);
   });
 });

@@ -1,8 +1,8 @@
-import { unifyBigrams } from '../utils';
+import { unifyBigrams } from '../helpers/latinBigramHelpers';
 import {
-  O_TILDE_SMALL as o_,
   N_TILDE_SMALL as n_,
-} from '../characterCollection';
+  O_TILDE_SMALL as o_,
+} from '../utils/characterCollection';
 
 describe('`NG`-word splitting and exceptions', () => {
   test.each`
