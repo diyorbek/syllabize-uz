@@ -1,7 +1,7 @@
 # syllabize-uz
 
-[![](https://github.com/Diyorbek/syllabize-uz/workflows/Build/badge.svg?branch=master)](https://github.com/Diyorbek/syllabize-uz/actions)
-[![](https://codecov.io/gh/Diyorbek/syllabize-uz/branch/master/graph/badge.svg)](https://codecov.io/gh/Diyorbek/syllabize-uz)
+[![](https://github.com/Diyorbek/syllabize-uz/workflows/Build/badge.svg?branch=master)](https://github.com/diyorbek/syllabize-uz/actions)
+[![](https://codecov.io/gh/Diyorbek/syllabize-uz/branch/master/graph/badge.svg)](https://codecov.io/gh/diyorbek/syllabize-uz)
 [![](https://img.shields.io/npm/v/syllabize-uz)](https://npmjs.com/syllabize-uz)
 [![](https://img.shields.io/npm/types/syllabize-uz)](https://npmjs.com/syllabize-uz)
 [![](https://img.shields.io/bundlephobia/minzip/syllabize-uz)](https://bundlephobia.com/result?p=syllabize-uz)
@@ -11,7 +11,7 @@ Oʻzbekcha soʻzlarni boʻgʻinlarga ajratish. [Fonetika.Uz](https://fonetika.uz
 
 ### Oʻqish
 
-- [English](https://github.com/Diyorbek/syllabize-uz/blob/master/README.md)
+- [English](https://github.com/diyorbek/syllabize-uz/blob/master/README.md)
 
 ## Oʻrnatish
 
@@ -29,12 +29,16 @@ yarn add syllabize-uz
 
 ## Foydalanish
 
-Kutubxona yagona funksiyani taqdim qiladi: `syllabize(word)`
+Lotin alifbosidagi soʻzlar uchun: `syllabize(word)`
+
+Kirill alifbosidagi soʻzlar uchun: `syllabizeCyrillic(word)`
 
 ```js
-import { syllabize } from 'syllabize-uz';
+import { syllabize, syllabizeCyrillic } from 'syllabize-uz';
 
-const syllables = syllabize('olmaxon'); // ["ol", "ma", "xon"]
+const syllablesLatin = syllabize('olmaxon'); // ["ol", "ma", "xon"]
+const syllablesCyrillic = syllabizeCyrillic('мўъжизавий'); // ["мўъ", "жи", "за", "вий"]
 
-console.log(syllables.join('-')); // "ol-ma-xon"
+console.log(syllablesLatin.join('-')); // "ol-ma-xon"
+console.log(syllabizeCyrillic.join('-')); // "мўъ-жи-за-вий"
 ```
