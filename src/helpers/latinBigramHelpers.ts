@@ -1,5 +1,5 @@
 import { splitReplacements } from '../exceptions/exceptionalCombinations';
-import { unifyNG } from '../exceptions/ngWords';
+import { unifyLatinNG } from '../exceptions/ngWords';
 import {
   APOSTROPHE,
   C_CEDILLA_SMALL,
@@ -15,7 +15,7 @@ import {
  * Fix apostrophes.
  */
 export function unifyBigrams(word: string): string {
-  return unifyNG(
+  return unifyLatinNG(
     word
       .toLowerCase()
       .replace(/sh/g, S_CEDILLA_SMALL)

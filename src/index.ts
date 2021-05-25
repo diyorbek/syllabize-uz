@@ -1,4 +1,5 @@
 import { syllabize as syllabizeCore } from './core/syllabize';
+import { splitCyrillicNG, unifyCyrillicNG } from './exceptions/ngWords';
 import {
   extractIotaConsonants,
   hideSoftSign,
@@ -19,9 +20,9 @@ export function syllabize(word: string): string[] {
   validateLatinWord(unifiedWord);
 
   const caseMap = generateCaseMap(word);
-  const syllables = syllabizeCore(unifiedWord, 'latin');
+  const syllables = syllabizeCore(unifiedWord, 'latin').map(splitBigrams);
 
-  return applyCaseMap(syllables.map(splitBigrams), caseMap);
+  return applyCaseMap(syllables, caseMap);
 }
 
 export function syllabizeCyrillic(word: string): string[] {
@@ -32,11 +33,12 @@ export function syllabizeCyrillic(word: string): string[] {
   validateCyrillicWord(word);
 
   const caseMap = generateCaseMap(word);
-  const unifiedWord = extractIotaConsonants(hideSoftSign(word));
-  const syllables = syllabizeCore(unifiedWord, 'cyrillic');
-
-  return applyCaseMap(
-    syllables.map(recoverIotas).map(recoverSoftSign),
-    caseMap,
+  const unifiedWord = extractIotaConsonants(
+    hideSoftSign(unifyCyrillicNG(word)),
   );
+  const syllables = syllabizeCore(unifiedWord, 'cyrillic').map((syllable) =>
+    recoverIotas(recoverSoftSign(splitCyrillicNG(syllable))),
+  );
+
+  return applyCaseMap(syllables, caseMap);
 }
