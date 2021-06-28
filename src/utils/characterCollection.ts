@@ -1,6 +1,6 @@
 // Special symbols of bigrams
-export const APOSTROPHE = String.fromCharCode(700);
-export const TURNED_COMMA = String.fromCharCode(699);
+export const APOSTROPHE = '\u02bc';
+export const TURNED_COMMA = '\u2018';
 
 export const CYRILLIC_HARD_SIGN = 'ъ';
 export const CYRILLIC_SOFT_SIGN = 'ь';

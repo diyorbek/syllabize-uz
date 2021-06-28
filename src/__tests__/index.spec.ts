@@ -9,7 +9,7 @@ describe('genenal syllablification structure', () => {
     input            | output                     | length
     ${''}            | ${''}                      | ${0}
     ${'a'}           | ${'a'}                     | ${1}
-    ${'aoueioʻ'}     | ${'a-o-u-e-i-oʻ'}          | ${6}
+    ${'aoueioʻ'}     | ${'a-o-u-e-i-o‘'}          | ${6}
     ${'abab'}        | ${'a-bab'}                 | ${2}
     ${'abbaba'}      | ${'ab-ba-ba'}              | ${3}
     ${'abbb'}        | ${'abbb'}                  | ${1}
