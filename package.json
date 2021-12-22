@@ -1,6 +1,6 @@
 {
   "name": "syllabize-uz",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Library for dividing Uzbek words into syllables. Oʻzbekcha soʻzlarni boʻgʻinlarga ajratish.",
   "author": "Diyorbek Sadullaev <diyorbek3377@gmail.com>",
   "repository": "git@github.com:diyorbek/syllabize-uz.git",
@@ -20,7 +20,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "/dist"
+    "/pkg"
   ],
   "scripts": {
     "build": "pika build",
@@ -28,8 +28,10 @@
     "test": "jest --coverage",
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts",
-    "prepublishOnly": "yarn typecheck && yarn lint && yarn format && yarn build",
-    "postversion": "git push && git push --tags"
+    "preversion": "yarn typecheck && yarn lint",
+    "version": "yarn build",
+    "postversion": "git push && git push --tags",
+    "prepublishOnly": "yarn typecheck && yarn lint && yarn format && yarn build"
   },
   "devDependencies": {
     "@pika/pack": "^0.5.0",

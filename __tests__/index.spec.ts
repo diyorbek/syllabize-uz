@@ -1,4 +1,4 @@
-import { syllabize } from '../pkg';
+import { syllabize } from '../src';
 import {
   APOSTROPHE as aps,
   TURNED_COMMA as tcm,
