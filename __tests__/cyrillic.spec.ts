@@ -1,4 +1,4 @@
-import { syllabizeCyrillic } from '../index';
+import { syllabizeCyrillic } from '../pkg';
 
 describe('general', () => {
   test.each`

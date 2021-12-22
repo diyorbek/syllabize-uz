@@ -1,8 +1,8 @@
-import { syllabize } from '../index';
+import { syllabize } from '../pkg';
 import {
   APOSTROPHE as aps,
   TURNED_COMMA as tcm,
-} from '../utils/characterCollection';
+} from '../src/utils/characterCollection';
 
 describe('genenal syllablification structure', () => {
   test.each`

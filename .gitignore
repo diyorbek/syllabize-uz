@@ -49,6 +49,7 @@ typings/
 
 # Builds
 dist/
+pkg/
 
 # other
 .DS_Store

@@ -1,9 +1,9 @@
-import { unifyCyrillicNG } from '../exceptions/ngWords';
-import { unifyBigrams } from '../helpers/latinBigramHelpers';
+import { unifyCyrillicNG } from '../src/exceptions/ngWords';
+import { unifyBigrams } from '../src/helpers/latinBigramHelpers';
 import {
   N_TILDE_SMALL as n_,
   O_TILDE_SMALL as o_,
-} from '../utils/characterCollection';
+} from '../src/utils/characterCollection';
 
 describe('`NG`-word splitting and exceptions', () => {
   test.each`
