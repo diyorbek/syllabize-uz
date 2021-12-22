@@ -27,7 +27,28 @@ Yarn
 yarn add syllabize-uz
 ```
 
+UNPKG
+
+```html
+<script src="https://unpkg.com/syllabize-uz/dist-umd/index.min.js"></script>
+```
+
 ## Usage
+
+Importing:
+
+```js
+import { syllabize } from 'syllabize-uz';
+```
+
+When using UNPKG distribution:
+
+```html
+<script src="https://unpkg.com/syllabize-uz/dist-umd/index.min.js"></script>
+<script>
+  const { syllabize } = syllabizeUz;
+</script>
+```
 
 For words in latin alphabet use: `syllabize(word)`
 

@@ -27,7 +27,28 @@ Yarn
 yarn add syllabize-uz
 ```
 
+UNPKG
+
+```html
+<script src="https://unpkg.com/syllabize-uz/dist-umd/index.min.js"></script>
+```
+
 ## Foydalanish
+
+Import qilish:
+
+```js
+import { syllabize } from 'syllabize-uz';
+```
+
+UNPKG orqali boʻlsa:
+
+```html
+<script src="https://unpkg.com/syllabize-uz/dist-umd/index.min.js"></script>
+<script>
+  const { syllabize } = syllabizeUz;
+</script>
+```
 
 Lotin alifbosidagi soʻzlar uchun: `syllabize(word)`
 
