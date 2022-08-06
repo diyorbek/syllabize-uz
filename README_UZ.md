@@ -61,5 +61,5 @@ const syllablesLatin = syllabize('olmaxon'); // ["ol", "ma", "xon"]
 const syllablesCyrillic = syllabizeCyrillic('мўъжизавий'); // ["мўъ", "жи", "за", "вий"]
 
 console.log(syllablesLatin.join('-')); // "ol-ma-xon"
-console.log(syllabizeCyrillic.join('-')); // "мўъ-жи-за-вий"
+console.log(syllablesCyrillic.join('-')); // "мўъ-жи-за-вий"
 ```
